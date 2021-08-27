@@ -47,7 +47,7 @@ const result = renderer.render(SAMPLE_MIDI_DATA.tracks[0].notes, {
 function App() {
   return (
     <Container>
-      <Header>Piano Chords Visualizer</Header>
+      <Header>Piano Notes Visualizer</Header>
       <Content>{result}</Content>
       <Footer>{new Date().getFullYear()}&copy;Copyright</Footer>
     </Container>

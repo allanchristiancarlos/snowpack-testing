@@ -26,7 +26,7 @@ const BlackKey: React.FC = function Piano(props) {
     <div
       style={{
         background: 'black',
-        height: '60%',
+        height: '65%',
         display: 'flex',
         justifyContent: 'center',
         paddingTop: '8px',
