@@ -6,7 +6,7 @@ const Container = styled.div`
 `;
 
 function App() {
-  return <Container>My App</Container>;
+  return <Container>My App (Updated)</Container>;
 }
 
 export default App;
