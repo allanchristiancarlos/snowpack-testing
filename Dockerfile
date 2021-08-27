@@ -6,8 +6,6 @@ WORKDIR /usr/src/app
 COPY package.json package.json
 COPY yarn.lock yarn.lock
 
-RUN echo $PORT
-
 # install node modules and build assets
 RUN yarn install
 
@@ -17,11 +15,10 @@ COPY . .
 
 RUN yarn build
 
-FROM nginx:1.21.1-alpine
-
+FROM nginx:alpine
 
 # Copy static assets from builder stage
 COPY --from=builder /usr/src/app/build /var/www
-COPY --from=builder /usr/src/app/nginx.conf /etc/nginx/nginx.conf
+COPY --from=builder /usr/src/app/nginx.conf /etc/nginx/conf.d/
 
-CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
+CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
