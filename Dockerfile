@@ -6,6 +6,8 @@ WORKDIR /usr/src/app
 COPY package.json package.json
 COPY yarn.lock yarn.lock
 
+RUN echo $PORT
+
 # install node modules and build assets
 RUN yarn install
 
@@ -22,6 +24,4 @@ FROM nginx:1.21.1-alpine
 COPY --from=builder /usr/src/app/build /var/www
 COPY --from=builder /usr/src/app/nginx.conf /etc/nginx/nginx.conf
 
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
