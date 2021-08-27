@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "ms-vscode.vscode-typescript-tslint-plugin",
+    "eamodio.gitlens",
+    "esbenp.prettier-vscode",
+    "jpoissonnier.vscode-styled-components",
+    "editorconfig.editorconfig"
+  ],
+  "unwantedRecommendations": []
+}
