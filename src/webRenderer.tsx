@@ -1,24 +1,25 @@
 import React from 'react'
 import type { INote, IRenderer, IRenderOpts } from './@types/types'
 
-const WhiteKey: React.FC<{ border: boolean }> = function Piano(props) {
-  return (
-    <div
-      style={{
-        background: 'white',
-        display: 'flex',
-        justifyContent: 'center',
-        paddingTop: '8px',
-        fontSize: '12px',
-        fontWeight: 'bold',
-        flexGrow: 1,
-        borderRight: props.border ? '2px solid black' : undefined,
-      }}
-    >
-      {props.children}
-    </div>
-  )
-}
+const WhiteKey: React.FC<{ border: boolean; fullkey: boolean }> =
+  function Piano(props) {
+    return (
+      <div
+        style={{
+          background: 'white',
+          display: 'flex',
+          justifyContent: 'center',
+          paddingTop: '8px',
+          fontSize: '12px',
+          fontWeight: 'bold',
+          flexGrow: props.fullkey ? 2 : 1,
+          borderRight: props.border ? '2px solid black' : undefined,
+        }}
+      >
+        {props.children}
+      </div>
+    )
+  }
 
 const BlackKey: React.FC<{ borderAlign: 'left' | 'center' | 'right' }> =
   function Piano(props) {
@@ -69,16 +70,18 @@ const BlackKey: React.FC<{ borderAlign: 'left' | 'center' | 'right' }> =
     )
   }
 
-const keys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+const chords = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
-const Piano: React.FC<{ keys: number }> = function Piano(props) {
-  let currentKey = 0
+const Piano: React.FC<{ keys: number; startKey: string }> = function Piano(
+  props
+) {
+  let currentKey = chords.indexOf(props.startKey)
   let octaves = 1
   return (
     <div
       style={{
         display: 'flex',
-        backgroundColor: '#BF616A',
+        backgroundColor: '#900',
         padding: '16px 0',
         height: '360px',
         width: '100%',
@@ -91,7 +94,8 @@ const Piano: React.FC<{ keys: number }> = function Piano(props) {
           currentKey = 1
           octaves++
         }
-        const key = keys[currentKey - 1]
+        const isLastKey = index + 1 === props.keys
+        const key = chords[currentKey - 1]
         const isBlackKey = key.indexOf('#') !== -1
         const blackKeysAlignment = {
           'F#': 'right',
@@ -108,6 +112,7 @@ const Piano: React.FC<{ keys: number }> = function Piano(props) {
           <WhiteKey
             key={index}
             border={key === 'E' || key === 'B'}
+            fullkey={isLastKey && !isBlackKey}
           >{`${key}${octaves}`}</WhiteKey>
         )
       })}
@@ -117,10 +122,6 @@ const Piano: React.FC<{ keys: number }> = function Piano(props) {
 
 export class WebRenderer implements IRenderer<React.ReactNode> {
   render(notes: INote[], opts: IRenderOpts) {
-    const lowestNote = Math.min(...notes.map(x => x.midi))
-    const pianoKeys = 61
-    const keyStart = 'C'
-
     return (
       <div
         style={{
@@ -129,7 +130,7 @@ export class WebRenderer implements IRenderer<React.ReactNode> {
           height: '100%',
         }}
       >
-        <Piano keys={61} />
+        <Piano keys={88} startKey="D" />
       </div>
       // <div
       //   style={{
