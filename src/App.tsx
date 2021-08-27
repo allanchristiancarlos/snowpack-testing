@@ -12,7 +12,13 @@ const Container = styled.div`
 const Header = styled.header`
   background-color: black;
   color: white;
-  height: 64px;
+  /* height: 64px; */
+  font-size: 64px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 `
 const Content = styled.header`
   background-color: white;
@@ -41,7 +47,7 @@ const result = renderer.render(SAMPLE_MIDI_DATA.tracks[0].notes, {
 function App() {
   return (
     <Container>
-      <Header>Piano visualizer</Header>
+      <Header>Piano Chords Visualizer</Header>
       <Content>{result}</Content>
       <Footer>{new Date().getFullYear()}&copy;Copyright</Footer>
     </Container>
