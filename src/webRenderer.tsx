@@ -132,7 +132,7 @@ export class WebRenderer implements IRenderer<React.ReactNode> {
           height: '100%',
         }}
       >
-        <Piano keys={88} startKey="D" />
+        <Piano keys={61} startKey="C" />
       </div>
       // <div
       //   style={{
