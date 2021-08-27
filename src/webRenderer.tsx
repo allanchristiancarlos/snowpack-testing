@@ -14,6 +14,7 @@ const WhiteKey: React.FC<{ border: boolean; fullkey: boolean }> =
           fontWeight: 'bold',
           flexGrow: props.fullkey ? 2 : 1,
           borderRight: props.border ? '2px solid black' : undefined,
+          borderBottom: '2px solid black',
         }}
       >
         {props.children}
@@ -55,6 +56,7 @@ const BlackKey: React.FC<{ borderAlign: 'left' | 'center' | 'right' }> =
           style={{
             background: 'white',
             flexGrow: 1.5,
+            borderBottom: '2px solid black',
           }}
         >
           <div
@@ -82,7 +84,7 @@ const Piano: React.FC<{ keys: number; startKey: string }> = function Piano(
       style={{
         display: 'flex',
         backgroundColor: '#900',
-        padding: '16px 0',
+        padding: '8px 0 16px 0',
         height: '360px',
         width: '100%',
         marginBottom: '24px',
