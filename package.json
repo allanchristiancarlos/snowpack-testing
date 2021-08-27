@@ -13,6 +13,7 @@
     "global": "^4.4.0",
     "heroku": "^7.59.0",
     "http-server": "^13.0.1",
+    "husky": "^7.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
@@ -30,7 +31,13 @@
     "@web/test-runner": "^0.13.3",
     "chai": "^4.3.4",
     "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.1",
     "snowpack": "^3.3.7",
     "typescript": "^4.2.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "pretty-quick --staged"
+    }
   }
 }
