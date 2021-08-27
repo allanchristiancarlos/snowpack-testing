@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import type { INote, IRenderer, IRenderOpts } from './@types/types'
 import { WebRenderer } from './webRenderer'
+import { SAMPLE_MIDI_DATA } from './data'
 
 const Container = styled.div`
   display: flex;
@@ -17,6 +18,7 @@ const Content = styled.header`
   background-color: white;
   color: black;
   flex: 1;
+  position: relative;
 `
 const Footer = styled.header`
   background-color: black;
@@ -33,7 +35,9 @@ class Renderer<T> {
 }
 
 const renderer = new Renderer({ renderer: new WebRenderer() })
-const result = renderer.render([], { noteWidth: 10 })
+const result = renderer.render(SAMPLE_MIDI_DATA.tracks[0].notes, {
+  noteWidth: 10,
+})
 function App() {
   return (
     <Container>

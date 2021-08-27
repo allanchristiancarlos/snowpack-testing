@@ -10,6 +10,7 @@
   "dependencies": {
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
+    "@tonejs/midi": "^2.0.27",
     "global": "^4.4.0",
     "heroku": "^7.59.0",
     "http-server": "^13.0.1",
