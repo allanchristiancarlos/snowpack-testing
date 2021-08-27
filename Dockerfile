@@ -22,6 +22,6 @@ FROM nginx:1.21.1-alpine
 COPY --from=builder /usr/src/app/build /var/www
 COPY --from=builder /usr/src/app/nginx.conf /etc/nginx/nginx.conf
 
-EXPOSE 5000
+EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
