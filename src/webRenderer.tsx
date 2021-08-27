@@ -1,19 +1,18 @@
 import React from 'react'
 import type { INote, IRenderer, IRenderOpts } from './@types/types'
 
-const WhiteKey: React.FC = function Piano(props) {
+const WhiteKey: React.FC<{ border: boolean }> = function Piano(props) {
   return (
     <div
       style={{
         background: 'white',
-        height: '100%',
         display: 'flex',
-        border: '1px solid black',
         justifyContent: 'center',
         paddingTop: '8px',
         fontSize: '12px',
         fontWeight: 'bold',
         flexGrow: 1,
+        borderRight: props.border ? '2px solid black' : undefined,
       }}
     >
       {props.children}
@@ -21,25 +20,54 @@ const WhiteKey: React.FC = function Piano(props) {
   )
 }
 
-const BlackKey: React.FC = function Piano(props) {
-  return (
-    <div
-      style={{
-        background: 'black',
-        height: '65%',
-        display: 'flex',
-        justifyContent: 'center',
-        paddingTop: '8px',
-        color: 'white',
-        fontSize: '11px',
-        fontWeight: 'bold',
-        flexGrow: 0.5,
-      }}
-    >
-      {props.children}
-    </div>
-  )
-}
+const BlackKey: React.FC<{ borderAlign: 'left' | 'center' | 'right' }> =
+  function Piano(props) {
+    const align = {
+      left: '30%',
+      center: '50%',
+      right: '70%',
+    }
+    return (
+      <div
+        style={{
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+        }}
+      >
+        <div
+          style={{
+            background: 'black',
+            display: 'flex',
+            justifyContent: 'center',
+            paddingTop: '8px',
+            color: 'white',
+            fontSize: '11px',
+            fontWeight: 'bold',
+            flexGrow: 3,
+          }}
+        >
+          {props.children}
+        </div>
+        <div
+          style={{
+            background: 'white',
+            flexGrow: 1.5,
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: 'black',
+              height: '100%',
+              width: '2px',
+              marginLeft: align[props.borderAlign],
+            }}
+          ></div>
+        </div>
+      </div>
+    )
+  }
 
 const keys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
@@ -50,7 +78,7 @@ const Piano: React.FC<{ keys: number }> = function Piano(props) {
     <div
       style={{
         display: 'flex',
-        backgroundColor: 'gray',
+        backgroundColor: '#BF616A',
         padding: '16px 0',
         height: '360px',
         width: '100%',
@@ -65,10 +93,22 @@ const Piano: React.FC<{ keys: number }> = function Piano(props) {
         }
         const key = keys[currentKey - 1]
         const isBlackKey = key.indexOf('#') !== -1
+        const blackKeysAlignment = {
+          'F#': 'right',
+          'C#': 'right',
+          'A#': 'left',
+          'D#': 'left',
+        } as any
         return isBlackKey ? (
-          <BlackKey key={index}>{`${key}${octaves}`}</BlackKey>
+          <BlackKey
+            borderAlign={blackKeysAlignment[key] || 'center'}
+            key={index}
+          >{`${key}${octaves}`}</BlackKey>
         ) : (
-          <WhiteKey key={index}>{`${key}${octaves}`}</WhiteKey>
+          <WhiteKey
+            key={index}
+            border={key === 'E' || key === 'B'}
+          >{`${key}${octaves}`}</WhiteKey>
         )
       })}
     </div>
