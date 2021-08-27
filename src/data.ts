@@ -3467,3 +3467,40 @@ export const SAMPLE_MIDI_DATA = {
     },
   ],
 }
+
+export const NOTES_BY_MIDI_NUMBER = (() => {
+  const chords = [
+    'A',
+    'A#',
+    'B',
+    'C',
+    'C#',
+    'D',
+    'D#',
+    'E',
+    'F',
+    'F#',
+    'G',
+    'G#',
+  ]
+  let currentChord = 0
+  let octave = 0
+  return Array.from(Array(88).keys()).reduce((acc, current) => {
+    acc[current + 21] = {
+      chord: chords[currentChord],
+      octave,
+    }
+
+    if (chords[currentChord] === 'B') {
+      octave++
+    }
+
+    if (chords.length - 1 === currentChord) {
+      currentChord = 0
+    } else {
+      currentChord++
+    }
+
+    return acc
+  }, {} as Record<number, { chord: string; octave: number }>)
+})()

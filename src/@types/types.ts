@@ -10,6 +10,7 @@ export interface INote {
 
 export interface IRenderOpts {
   noteWidth: number
+  piano: '61' | '88'
 }
 
 export interface IRenderer<T> {

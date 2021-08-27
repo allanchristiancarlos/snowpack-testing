@@ -43,6 +43,7 @@ class Renderer<T> {
 const renderer = new Renderer({ renderer: new WebRenderer() })
 const result = renderer.render(SAMPLE_MIDI_DATA.tracks[0].notes, {
   noteWidth: 10,
+  piano: '61',
 })
 function App() {
   return (

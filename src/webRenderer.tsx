@@ -1,5 +1,6 @@
 import React from 'react'
 import type { INote, IRenderer, IRenderOpts } from './@types/types'
+import { NOTES_BY_MIDI_NUMBER } from './data'
 
 const WhiteKey: React.FC<{ border: boolean; fullkey: boolean }> =
   function Piano(props) {
@@ -87,7 +88,6 @@ const Piano: React.FC<{ keys: number; startKey: string }> = function Piano(
         padding: '8px 0 16px 0',
         height: '360px',
         width: '100%',
-        marginBottom: '24px',
       }}
     >
       {Array.from(Array(props.keys).keys()).map((_, index) => {
@@ -124,48 +124,74 @@ const Piano: React.FC<{ keys: number; startKey: string }> = function Piano(
 
 export class WebRenderer implements IRenderer<React.ReactNode> {
   render(notes: INote[], opts: IRenderOpts) {
+    const lowesMidiNote = Math.min(...notes.map(x => x.midi))
+    const midiNumberStart = opts.piano === '88' ? 22 : 24
+    const startKey = opts.piano === '88' ? 'A' : 'C'
+    const totalKeys = parseInt(opts.piano)
+    const keyWidth = 100 / totalKeys
     return (
       <div
         style={{
-          alignItems: 'flex-end',
-          display: 'flex',
+          position: 'relative',
+          width: '100%',
           height: '100%',
+          background: 'black',
+          overflowY: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        <Piano keys={61} startKey="C" />
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            flex: 1,
+            overflow: 'scroll',
+          }}
+        >
+          <div
+            style={{
+              position: 'relative',
+              top: '900px',
+              left: 0,
+              width: '100%',
+              transition: 'ease-in-out top .2s',
+            }}
+          >
+            {notes.map((note, index) => {
+              return (
+                <div
+                  key={index}
+                  style={{
+                    position: 'absolute',
+                    left: `calc((${keyWidth}% * ${
+                      note.midi - midiNumberStart
+                    }) - 7px)`,
+                    width: `${keyWidth}%`,
+                    height: `calc(200px * ${note.duration})`,
+                    backgroundColor: '#ffc905',
+                    top: `-${200 * note.time}px`,
+                    fontSize: '16px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    fontWeight: 'bold',
+                    alignItems: 'center',
+                  }}
+                >
+                  <div title={JSON.stringify(note, null, 2)}>{note.name}</div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+        <div
+          style={{
+            zIndex: 1,
+          }}
+        >
+          <Piano keys={totalKeys} startKey={startKey} />
+        </div>
       </div>
-      // <div
-      //   style={{
-      //     position: 'relative',
-      //     width: '100%',
-      //     height: '100%',
-      //     background: 'black',
-      //     overflowY: 'auto',
-      //   }}
-      // >
-      //   {notes.map((note, index) => {
-      //     return (
-      //       <div
-      //         key={index}
-      //         style={{
-      //           position: 'absolute',
-      //           left: `calc(32px * ${note.midi})`,
-      //           width: '32px',
-      //           height: `calc(200px * ${note.duration})`,
-      //           backgroundColor: 'white',
-      //           top: `calc(200px * ${note.time})`,
-      //           fontSize: '16px',
-      //           display: 'flex',
-      //           justifyContent: 'center',
-      //           fontWeight: 'bold',
-      //           alignItems: 'center',
-      //         }}
-      //       >
-      //         <div title={JSON.stringify(note, null, 2)}>{note.name}</div>
-      //       </div>
-      //     )
-      //   })}
-      // </div>
     )
   }
 }
